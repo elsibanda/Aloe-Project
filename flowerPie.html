@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Agreements Distribution</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <style>
+  header {
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #2e8b57;
+        }
+
+        .chart-container {
+            width: 60%;
+            margin: 20px auto;
+        }
+        footer {
+            padding: 20px;
+            text-align: center;
+            background-color: #2e8b57;
+            color: white;
+            width: 100%;
+        }
+
+        .explanation-section {
+            background-color: #ffffff;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .explanation-section h2 {
+            color: #2e8b57;
+        }
+        .explanation-section p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+        .explanation-section ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+   
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Output of the flower stage</h1>
+    </header>
+    <div class="chart-container">
+        <canvas id="your-chart-canvas-id"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="your-chart-canvas-id"></canvas>
+    </div>
+
+    <div class="explanation-section">
+        <h2>Explanation of Data and Charts</h2>
+        <p>
+            This page displays the distribution of identification agreements for the Aloe Ferox flowering stage across various states. The pie chart visualizes the total number of agreements for each state, which helps us understand where most of the Aloe Ferox flowering observations are occurring. Here's a breakdown:
+        </p>
+        <ul>
+            <li><strong>Pie Chart:</strong> This chart illustrates the percentage distribution of identification agreements by state. It highlights which states have the most activity related to Aloe Ferox flowering observations.</li>
+        </ul>
+        <p>
+            The data used in this visualization is sourced from the recorded flowering activity of Aloe Ferox plants across different regions. The chart provides insights into the areas where the plant is most commonly identified.
+        </p>
+    </div>
+
+    <script>
+        let flowerName = './Flower_Process.csv';
+        
+        Promise.all([
+            d3.csv(flowerName),
+        ]).then(function([flowerData]) {
+            // Group data by state and sum the agreements
+            const stateAgreements = flowerData.reduce((acc, row) => {
+                const state = row.place_state_name;
+                const agreements = parseInt(row.num_identification_agreements) || 0;
+                
+                if (!acc[state]) {
+                    acc[state] = 0;
+                }
+                acc[state] += agreements;
+                return acc;
+            }, {});
+
+            // Convert to arrays for Chart.js
+            const states = Object.keys(stateAgreements);
+            const agreementCounts = Object.values(stateAgreements);
+
+            // Generate colors for each state
+            const colors = states.map((_, index) => {
+                const hue = (index * 360 / states.length) % 360;
+                return `hsla(${hue}, 70%, 60%, 0.8)`;
+            });
+
+            createPieChart(states, agreementCounts, colors);
+        }).catch(error => console.error("Error processing data:", error));
+
+        // Function to create a pie chart
+        function createPieChart(labels, data, colors) {
+            const config = {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: colors.map(color => color.replace('0.8', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'right',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Identification Agreements by State',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: 20
+                        }
+                    }
+                }
+            };
+
+            // If chart already exists, destroy it
+            if (window.growthChart instanceof Chart) {
+                window.growthChart.destroy();
+            }
+            
+            // Create new chart
+            const ctx = document.getElementById('your-chart-canvas-id').getContext('2d');
+            window.growthChart = new Chart(ctx, config);
+        }
+    </script>
+
+    <footer>
+        <p>&copy; 2024 Aloe Hub - Discover the Wonders of Aloe Ferox</p>
+    </footer>
+</body>
+</html>

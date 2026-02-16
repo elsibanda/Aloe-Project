@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>El Login / Signup</title>
+</head>
+<body>
+    <section> 
+        <div class="form">
+            <!-- Signup Form -->
+            <form id="signupForm" style="display: none;">
+                <h2>Sign Up</h2>
+                <div class="inputbox">
+                    <label for="Fname">Name</label>
+                    <input type="text" id="signupFname" placeholder="Name" required>
+                </div>
+                <div class="inputbox">
+                    <label for="Lname">Surname</label>
+                    <input type="text" id="signupLname" placeholder="Surname" required>
+                </div>
+                <div class="inputbox">
+                    <label for="email">Email</label>
+                    <input type="email" id="signupEmail" placeholder="Email" required>
+                </div>
+                <div class="inputbox">
+                    <label for="password">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Password" required>
+                </div>
+                <button id="SignupBTN">Sign Up</button>
+                <button type="button" id="goToLogin">Login</button>
+            </form>
+
+            <!-- Login Form -->
+            <form id="loginForm" style="display: block;">
+                <h2>Login</h2>
+                <div class="inputbox">
+                    <label for="email">Email</label>
+                    <input type="text" id="loginemail" placeholder="Email" required>
+                </div>
+                <div class="inputbox">
+                    <label for="password">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <button id="LoginBTN">Login</button>
+                <button type="button" id="goToSignup">Sign Up</button>
+            </form>
+        </div>
+    </section>
+    <script src="message.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>

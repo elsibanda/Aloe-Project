@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Agreements Distribution</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <style>
+         header {
+    padding: 20px;
+    text-align: center;
+}
+h1 {
+    color: #2e8b57;
+}
+
+.chart-container {
+            width: 30%;
+            margin: 20px auto;
+        }
+footer {
+    padding: 20px;
+    text-align: center;
+    background-color: #2e8b57;
+    color: white;
+    width: 100%;
+}
+   
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Output of the Budding stage</h1>
+    </header>
+    
+    <div class="chart-container">
+        <canvas id="your-chart-canvas-id"></canvas>
+        <p><strong>Figure </strong>(Pie-chart): We note that Western Cape records the highest amount of buds followed by Eastern Cape and KwaZulu-Natal respectively whilst Northeren Cape barely records buds.</p>
+    </div>
+
+    <script>
+        let buddingName = './budding.csv';
+        
+        
+        Promise.all([
+            d3.csv(buddingName),
+        ]).then(function([buddingData]) {
+            // Group data by state and sum the agreements
+            const stateAgreements = buddingData.reduce((acc, row) => {
+                const state = row.place_state_name;
+                const agreements = parseInt(row.num_identification_agreements) || 0;
+                
+                if (!acc[state]) {
+                    acc[state] = 0;
+                }
+                acc[state] += agreements;
+                return acc;
+            }, {});
+
+            // Convert to arrays for Chart.js
+            const states = Object.keys(stateAgreements);
+            const agreementCounts = Object.values(stateAgreements);
+
+            // Generate colors for each state
+            const colors = states.map((_, index) => {
+                const hue = (index * 360 / states.length) % 360;
+                return `hsla(${hue}, 70%, 60%, 0.8)`;
+            });
+
+            createPieChart(states, agreementCounts, colors);
+        }).catch(error => console.error("Error processing data:", error));
+
+        // Function to create a pie chart
+        function createPieChart(labels, data, colors) {
+            const config = {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: colors.map(color => color.replace('0.8', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'right',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Identification Agreements by State',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: 20
+                        }
+                    }
+                }
+            };
+
+            // If chart already exists, destroy it
+            if (window.growthChart instanceof Chart) {
+                window.growthChart.destroy();
+            }
+            
+            // Create new chart
+            const ctx = document.getElementById('your-chart-canvas-id').getContext('2d');
+            window.growthChart = new Chart(ctx, config);
+        }
+    </script>
+    <footer>
+        <p>&copy; 2024 Aloe Hub - Discover the Wonders of Aloe Ferox</p>
+    </footer>
+</body>
+</html>

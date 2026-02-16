@@ -1,0 +1,55 @@
+/* Header Styling */
+header {
+    background-color: #2a5d32; /* Dark green (navbar match) */
+    padding: 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+/* Updated nav-buttons */
+.nav-buttons {
+    display: flex;
+    gap: 5px; /* Smaller gap to bring buttons closer */
+}
+
+.nav-buttons button {
+    padding: 8px 15px;
+    background-color: #2a5d32; /* Match navbar background */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-buttons button:hover {
+    background-color: #3a8045; /* Lighter green on hover */
+    color: #eaf8e6; /* Light green text */
+}
+
+/* Main Banner Section */
+.main-banner {
+    background-color: #eaf8e6; /* Light green */
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.main-banner h1 {
+    font-size: 2.5rem;
+    color: #2a5d32; /* Match navbar header color */
+}
+
+.main-banner p {
+    font-size: 1.2rem;
+    color: #333;
+}

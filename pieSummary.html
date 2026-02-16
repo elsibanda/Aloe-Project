@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identification Agreements Gauges</title>
+    <link rel="stylesheet" href="PS.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            padding: 20px;
+            text-align: center;
+            background-color:green;
+        }
+
+        h1 {
+            color: #161a18;
+            
+        }
+        h1:hover{
+            cursor: pointer;
+            color: whitesmoke;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-areas: 
+                "pie pie pie"
+                "donut1 donut2 donut3"
+                "card1 card2 card3";
+            gap: 24px;
+            width: 95%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color:rgb(203, 207, 199);
+        }
+
+        /* Large centered pie chart */
+        #pie-chart-container {
+            grid-area: pie;
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            justify-self: center;
+            margin-bottom: 20px;
+        
+        }
+
+        /* Doughnut chart containers */
+        #budding-container {
+            grid-area: donut1;
+            background-color: #e6f7f9;
+        }
+
+        #flowering-container {
+            grid-area: donut2;
+            background-color: #f9f1e6;
+        }
+
+        #fruiting-container {
+            grid-area: donut3;
+            background-color: #e6f9e6;
+        }
+
+        .chart-container {
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 300px;
+        }
+
+        /* Cards styling */
+        #budding-card {
+            grid-area: card1;
+        }
+
+        #flowering-card {
+            grid-area: card2;
+        }
+
+        #fruiting-card {
+            grid-area: card3;
+        }
+
+        .card {
+            background-color: #c5eccf;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #2e8b57;
+        }
+
+        .card p {
+            margin: 10px 0 0;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #1a5235;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            background-color: #2e8b57;
+            color: white;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-areas: 
+                    "pie pie pie"
+                    "donut1 donut1 donut1"
+                    "donut2 donut2 donut2"
+                    "donut3 donut3 donut3"
+                    "card1 card2 card3";
+                gap: 16px;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                    "pie"
+                    "donut1"
+                    "donut2"
+                    "donut3"
+                    "card1"
+                    "card2"
+                    "card3";
+            }
+
+            .card {
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>      
+              
+            <div class="header-title">Summary of The Phenological Stages</div>
+            <div class="nav-buttons">
+                <button onclick="window.location.href='homenew.html'">Home</button>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="window.location.href='barGraph.html'">Back</button>
+                
+            </div>      
+   
+    </header>
+  
+    <div class="main-container">
+        
+        <div id="pie-chart-container" class="chart-container">
+            <canvas id="pie-chart"></canvas>
+        
+        </div>
+        <div id="flowering-container" class="chart-container">
+            <canvas id="flowering-chart"></canvas>
+        </div>
+        <div id="fruiting-container" class="chart-container">
+            <canvas id="fruiting-chart"></canvas>
+        </div>
+        <div id="budding-container" class="chart-container">
+            <canvas id="budding-chart"></canvas>
+        </div>
+
+        <div id="budding-card" class="card">
+            <h2>Budding</h2>
+            <p id="budding-total">Loading...</p>
+        </div>
+        <div id="flowering-card" class="card">
+            <h2>Flowering</h2>
+            <p id="flowering-total">Loading...</p>
+        </div>
+        <div id="fruiting-card" class="card">
+            <h2>Fruiting</h2>
+            <p id="fruiting-total">Loading...</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Aloe Hub - Discover the Wonders of Aloe Ferox</p>
+    </footer>
+
+    <script>
+        // Your existing JavaScript remains the same
+        let buddingName = './budding.csv';
+        let flowerName = './Flower_Process.csv';
+        let fruitName = './fruit_Process.csv';
+
+        Promise.all([
+            d3.csv(buddingName),
+            d3.csv(flowerName),
+            d3.csv(fruitName)
+        ]).then(function([buddingData, flowerData, fruitData]) {
+            const totalBudding = buddingData.reduce((sum, row) => sum + parseInt(row.num_identification_agreements), 0);
+            const totalFlower = flowerData.reduce((sum, row) => sum + parseInt(row.num_identification_agreements), 0);
+            const totalFruit = fruitData.reduce((sum, row) => sum + parseInt(row.num_identification_agreements), 0);
+
+            createPieChart([totalBudding, totalFlower, totalFruit]);
+            loadAndCreateChart('./budding.csv', 'budding-chart', 'Budding Process According To State');
+            loadAndCreateChart('./Flower_Process.csv', 'flowering-chart', 'Flowering Process According To State');
+            loadAndCreateChart('./fruit_Process.csv', 'fruiting-chart', 'Fruiting Process According To State');
+
+            document.getElementById('budding-total').textContent = totalBudding;
+            document.getElementById('flowering-total').textContent = totalFlower;
+            document.getElementById('fruiting-total').textContent = totalFruit;
+        }).catch(error => console.error("Error processing data:", error));
+
+        function createPieChart(data) {
+            const config = {
+                type: 'pie',
+                data: {
+                    labels: ['Budding Agreements', 'Flowering Agreements', 'Fruiting Agreements'],
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Overall Phenological Stages',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            };
+
+            const ctx = document.getElementById('pie-chart').getContext('2d');
+            new Chart(ctx, config);
+        }
+
+        function loadAndCreateChart(csvPath, canvasId, chartTitle) {
+            d3.csv(csvPath).then(function(data) {
+                const stateAgreements = data.reduce((acc, row) => {
+                    const state = row.place_state_name;
+                    const agreements = parseInt(row.num_identification_agreements) || 0;
+                    
+                    if (!acc[state]) {
+                        acc[state] = 0;
+                    }
+                    acc[state] += agreements;
+                    return acc;
+                }, {});
+
+                const states = Object.keys(stateAgreements);
+                const agreementCounts = Object.values(stateAgreements);
+
+                const colors = states.map((_, index) => {
+                    const hue = (index * 360 / states.length) % 360;
+                    return `hsla(${hue}, 70%, 60%, 0.8)`;
+                });
+
+                createDonut(canvasId, chartTitle, states, agreementCounts, colors);
+            }).catch(error => console.error("Error processing data:", error));
+        }
+
+        function createDonut(canvasId, chartTitle, labels, data, colors) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: colors.map(color => color.replace('0.8', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                padding: 20,
+                                font: { size: 11 }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: chartTitle,
+                            font: { size: 14, weight: 'bold' },
+                            padding: 20
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+    
+</body>
+</html>

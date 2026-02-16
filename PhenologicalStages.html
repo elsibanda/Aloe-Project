@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Growth Levels</title>
+    <link rel="stylesheet" href="PS.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        header {
+            padding: 20px;
+            text-align: center;
+            background-color:#2e8b57;
+        }
+        h1 {
+            color: black;
+        }
+        h1:hover{
+            color:antiquewhite;
+        }
+        .chart-container {
+            width: 60%;
+            margin: 20px auto;
+        }
+        .navlist {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;
+    font-size: 60%;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.navlist ul {
+    display: flex;
+    list-style: none; /* Removes default list styling */
+    padding: 0;
+    margin: 0;
+}
+
+.navlist li {
+    margin: 0 10px; /* Adds spacing between list items */
+}
+        footer {
+            padding: 20px;
+            text-align: center;
+            background-color: #2e8b57;
+            color: white;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+              
+            <div class="header-title">Plant Growth Levels</div>
+            <div class="nav-buttons">
+                <button onclick="window.location.href='homenew.html'">Home</button>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="window.location.href='barGraph.html'">Provinces</button>
+                
+            </div>
+        
+    </header>
+   
+    <!-- Line Chart at the Top -->
+    <div class="chart-container">
+        <canvas id="line-chart"></canvas>
+        <p>Figure 1: How does the Phenological process work? This graph potrays the relationship of buds, flowering and fruiting process according to the number of identification agreements</p>
+        <p>In this graph we are shown the peak months and the off-peak months whilst the flowering process is somewhat constant. </p>
+    </div>
+
+    <!-- Separate Bar Charts for Each Category -->
+    <div class="chart-container">
+        <canvas id="budding-bar-chart"></canvas>
+        <p> Figure 2: We are shown a more clear illustration of budding process from the least peak months to the most peak months.</p>
+    </div>
+    <div class="chart-container">
+        <canvas id="flowering-bar-chart"></canvas>
+        <p> Figure 3: We are shown a more clear illustration of the flowering process from the least to the most peak months from the time of planting.</p>
+    </div>
+    <div class="chart-container">
+        <canvas id="fruiting-bar-chart"></canvas>
+        <p> Figure 4:We are shown a more clear illustration of the fruiting process from the least to the most peak months from the time of planting.</p>
+    </div>
+
+    <script>
+        let buddingName = './budding.csv';
+        let flowerName = './Flower_Process.csv';
+        let fruitName = './fruit_Process.csv';
+
+        function processDate(dateString) {
+            const date = new Date(dateString);
+            return {
+                fullDate: dateString,
+                year: date.getFullYear(),
+                month: new Intl.DateTimeFormat('en-US', { month: 'short' }).format(date),
+                monthNum: date.getMonth() + 1,
+                day: date.getDate()
+            };
+        }
+
+        Promise.all([
+            d3.csv(buddingName),
+            d3.csv(flowerName),
+            d3.csv(fruitName)
+        ]).then(function([buddingData, flowerData, fruitData]) {
+            const processedData = {
+                budding: buddingData.map(row => ({
+                    num_identification_agreements: parseInt(row.num_identification_agreements),
+                    month: new Date(row.observed_on).getMonth()
+                })),
+                flower: flowerData.map(row => ({
+                    num_identification_agreements: parseInt(row.num_identification_agreements),
+                    month: new Date(row.observed_on).getMonth()
+                })),
+                fruit: fruitData.map(row => ({
+                    num_identification_agreements: parseInt(row.num_identification_agreements),
+                    month: new Date(row.observed_on).getMonth()
+                }))
+            };
+
+            const monthlyData = aggregateByMonth(processedData);
+            createLineChart(monthlyData);
+            createBarChart('budding-bar-chart', monthlyData.budding, 'Budding Agreements', 'rgba(75, 192, 192, 0.6)');
+            createBarChart('flowering-bar-chart', monthlyData.flower, 'Flowering Agreements', 'rgba(153, 102, 255, 0.6)');
+            createBarChart('fruiting-bar-chart', monthlyData.fruit, 'Fruiting Agreements', 'rgba(255, 159, 64, 0.6)');
+        }).catch(error => console.error("Error processing data:", error));
+
+        function aggregateByMonth(data) {
+            const months = Array(12).fill(0).map((_, i) => i);
+            const monthlyTotals = {
+                budding: months.map(month => ({
+                    month: month,
+                    total: data.budding
+                        .filter(d => d.month === month)
+                        .reduce((sum, d) => sum + d.num_identification_agreements, 0)
+                })),
+                flower: months.map(month => ({
+                    month: month,
+                    total: data.flower
+                        .filter(d => d.month === month)
+                        .reduce((sum, d) => sum + d.num_identification_agreements, 0)
+                })),
+                fruit: months.map(month => ({
+                    month: month,
+                    total: data.fruit
+                        .filter(d => d.month === month)
+                        .reduce((sum, d) => sum + d.num_identification_agreements, 0)
+                }))
+            };
+            return monthlyTotals;
+        }
+
+        function createLineChart(monthlyData) {
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            const ctx = document.getElementById('line-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: monthNames,
+                    datasets: [
+                        {
+                            label: 'Budding Agreements',
+                            data: monthlyData.budding.map(d => d.total),
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            fill: false,
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Flowering Agreements',
+                            data: monthlyData.flower.map(d => d.total),
+                            borderColor: 'rgba(153, 102, 255, 1)',
+                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                            fill: false,
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Fruiting Agreements',
+                            data: monthlyData.fruit.map(d => d.total),
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                            fill: false,
+                            tension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Identification Agreements'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Month'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Monthly Phenology Identification Agreements'
+                        }
+                    }
+                }
+            });
+        }
+
+        function createBarChart(canvasId, data, label, color) {
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: monthNames,
+                    datasets: [
+                        {
+                            label: label,
+                            data: data.map(d => d.total),
+                            backgroundColor: color
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Identification Agreements'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Month'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+<footer>
+    <p>&copy; 2024 Plant Growth Analytics</p>
+</footer>
+</html>

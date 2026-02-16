@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruiting Stage - Aloe Ferox</title>
+    <link rel="stylesheet" href="fruit.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-title">Aloe Essence</div>
+        <div class="nav-buttons">
+            <button onclick="window.location.href='homenew.html'">Home</button>
+        </div>
+    </header>
+
+    <section class="main-banner">
+        <h1>Fruiting Stage of Aloe Ferox</h1>
+        <p>Learn more about the fruiting stage, a crucial phase in the Aloe Ferox lifecycle where mature flowers transform into fruits.</p>
+    </section>
+
+    <section class="buttons-section">
+        <button onclick="window.location.href='mapbudding.html'">View Map</button>
+        <button onclick="window.location.href='fruitLine.html'">View Graph</button>
+        <button onclick="window.location.href='fruitPie.html'">View Chart</button>
+        <button onclick="window.location.href='data.html'">More information</button>
+    </section>
+
+    <section class="screenshots">
+        <h2>More Info</h2>
+        <div class="screenshot-gallery">
+            <figure>
+                <img src="fruit_Process.jpg" alt="Screenshot 1" onclick="openFullscreen(this)">
+                <figcaption>Process of Aloe Ferox fruit development.</figcaption>
+            </figure>
+            <figure>
+                <img src="fruit_Process_Area.jpg" alt="Screenshot 2" onclick="openFullscreen(this)">
+                <figcaption>Areas showing the fruiting process of Aloe Ferox.</figcaption>
+            </figure>
+            <figure>
+                <img src="outputFruit.jpg" alt="Screenshot 3" onclick="openFullscreen(this)">
+                <figcaption>Output showing the results of fruiting stage observations.</figcaption>
+            </figure>
+            <figure>
+                <img src="count_of_identification_Fruit.jpg" alt="Screenshot 4" onclick="openFullscreen(this)">
+                <figcaption>Counting and identifying the Aloe Ferox fruits.</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <div id="fullscreen-container" onclick="closeFullscreen()">
+        <img id="fullscreen-image" src="" alt="Fullscreen Image">
+        <button id="close-btn" onclick="closeFullscreen()">Close</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Aloe Hub</p>
+    </footer>
+
+    <script>
+        function openFullscreen(imgElement) {
+            const fullscreenContainer = document.getElementById('fullscreen-container');
+            const fullscreenImage = document.getElementById('fullscreen-image');
+            fullscreenImage.src = imgElement.src;
+            fullscreenContainer.style.display = 'flex';
+        }
+
+        function closeFullscreen() {
+            document.getElementById('fullscreen-container').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

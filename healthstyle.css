@@ -1,0 +1,116 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f9f4; /* Soft light green background */
+    color: #333; /* Dark grey text for readability */
+    padding: 0 15px;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #2a5d32; /* Match navbar background */
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Match nav-link button styles */
+.nav-buttons button {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: 500;
+    background-color: #2a5d32; /* Dark green button */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none; /* Removes outline on focus */
+    border: none; /* Remove any border */
+    cursor: pointer;
+}
+
+.nav-buttons button:hover {
+    background-color: #3a8045; /* Lighter green on hover */
+    color: #eaf8e6; /* Light green text on hover */
+}
+
+
+
+/* Care Guide Section */
+section {
+    margin-top: 30px;
+}
+
+/* Centered Heading Style for h2 */
+h2 {
+    text-align: center;
+    color: #4c9a2a; /* Rich green color */
+    margin-bottom: 15px;
+}
+
+/* Left-aligned Heading Style for h3 */
+h3 {
+    text-align: left;
+    color: #4c9a2a; /* Rich green color */
+    margin-bottom: 15px;
+}
+
+/* Left-aligned Paragraph Styling */
+p {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    line-height: 1.8;
+    text-align: left; /* Align paragraphs to the left */
+    padding: 0 20px; /* Add padding to sides for better spacing */
+}
+
+/* Left-aligned List Styling */
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: left; /* Align lists to the left */
+    margin-left: 20px; /* Add left margin for proper indentation */
+}
+
+ul li {
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #4c9a2a; /* Same green as headings for consistency */
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 30px;
+    border-radius: 8px;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}

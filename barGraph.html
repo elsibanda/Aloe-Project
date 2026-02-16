@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="PS.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <style>
+           header {
+    padding: 20px;
+    text-align: center;
+    background-color:#2e8b57
+}
+h1 {
+    color: black;
+}
+h1:hover{
+    color: white;
+}
+
+        .chart-container {
+            width: 60%;
+            margin: 20px auto;
+        }
+
+        .navlist {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;
+    font-size: 60%;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.navlist ul {
+    display: flex;
+    list-style: none; /* Removes default list styling */
+    padding: 0;
+    margin: 0;
+}
+
+.navlist li {
+    margin: 0 10px; /* Adds spacing between list items */
+}
+
+        footer {
+    padding: 20px;
+    text-align: center;
+    background-color: #2e8b57;
+    color: white;
+    width: 100%;
+}
+    </style>
+</head>
+<body>
+    <header>
+        
+              
+            <div class="header-title">Closer Look at the Phenological Stages</div>
+            <div class="nav-buttons">
+                <button onclick="window.location.href='homenew.html'">Home</button>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="window.location.href='pieSummary.html'">More Analysis</button>
+                
+            </div>      
+            <div class="nav-buttons">
+                <button onclick="window.location.href='PhenologicalStages.html'">Back</button>
+                
+            </div>  
+   
+    </header>
+
+    
+    <div class="chart-container">
+        <canvas id="budding-chart"></canvas>
+        <p> <strong>Figure 1</strong> : A closer look at provinces and when are seeds most planted and least planted. We get to compare 4 coastal areas and take note as to which one is more prevalent when it comes to budding. </p>
+    </div>
+    <div class="chart-container">
+        <canvas id="flowering-chart"></canvas>
+        <p><b>Figure 2</b>: A closer look at provinces when it comes to the flowering process. We now note that there are 3 coastal areas where the successful flowering process occurs. We also get to note which province yields the most successful flowering process as well as the least. </p>
+    </div>
+    <div class="chart-container">
+        <canvas id="fruiting-chart"></canvas>
+        <p><strong>Figure 3</strong>: We observe that from the flowering process, only two coastal areas yields successful fruiting process. This is to say only in these two areas where there are high chances of harvesting and reaping good Aloe Ferox plants. </p>
+    </div>
+
+    <script>
+        // Variables to hold dataset of each file
+        let buddingName = './budding.csv';
+        let flowerName = './Flower_Process.csv';
+        let fruitName = './fruit_Process.csv';
+
+        // Populate all the dataset to a container of charts
+        Promise.all([
+            d3.csv(buddingName),
+            d3.csv(flowerName),
+            d3.csv(fruitName)
+// Create a function that is going to hold all the dataset of all files
+        ]).then(function([buddingData, flowerData, fruitData]) {
+            const processedData = {
+                budding: buddingData.map(row => ({
+                    num_identification_agreements: parseInt(row.num_identification_agreements),
+                    observed_on: row.observed_on,
+                    place_state_name: row.place_state_name,
+                    month: new Date(row.observed_on).getMonth()
+                })),
+                flower: flowerData.map(row => ({
+                    num_identification_agreements: parseInt(row.num_identification_agreements),
+                    observed_on: row.observed_on,
+                    place_state_name: row.place_state_name,
+                    month: new Date(row.observed_on).getMonth()
+                })),
+                fruit: fruitData.map(row => ({
+                    num_identification_agreements: parseInt(row.num_identification_agreements),
+                    observed_on: row.observed_on,
+                    place_state_name: row.place_state_name,
+                    month: new Date(row.observed_on).getMonth()
+                }))
+            };
+
+            const monthlyData = aggregateByMonthAndState(processedData);
+            createVisualization(monthlyData);
+        }).catch(error => console.error("Error processing data:", error));
+
+        function aggregateByMonthAndState(data) {
+            const months = Array(12).fill(0).map((_, i) => i);
+            
+            const aggregateData = (dataSet) => {
+                const result = {};
+
+                dataSet.forEach(item => {
+                    const { month, place_state_name, num_identification_agreements } = item;
+                    if (!result[place_state_name]) result[place_state_name] = Array(12).fill(0);
+
+                    result[place_state_name][month] += num_identification_agreements;
+                });
+
+                return result;
+            };
+
+            return {
+                budding: aggregateData(data.budding),
+                flower: aggregateData(data.flower),
+                fruit: aggregateData(data.fruit)
+            };
+        }
+
+        function createVisualization(monthlyData) {
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            const chartConfig = (data, label, colors) => {
+                const datasets = Object.keys(data).map((state, index) => ({
+                    label: `${state}`,
+                    data: data[state],
+                    backgroundColor: colors[index % colors.length]
+                }));
+
+                return {
+                    type: 'bar',
+                    data: {
+                        labels: monthNames,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Identification Agreements'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Month'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            },
+                            title: {
+                                display: true,
+                                text: `${label} by Month and State`
+                            }
+                        }
+                    }
+                };
+            };
+
+            const colors = [
+                'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)',
+                'rgba(54, 162, 235, 0.6)', 'rgba(255, 99, 132, 0.6)', 'rgba(255, 205, 86, 0.6)'
+            ];
+
+            const ctxBudding = document.getElementById('budding-chart').getContext('2d');
+            const ctxFlowering = document.getElementById('flowering-chart').getContext('2d');
+            const ctxFruiting = document.getElementById('fruiting-chart').getContext('2d');
+
+            new Chart(ctxBudding, chartConfig(monthlyData.budding, 'Budding Agreements', colors));
+            new Chart(ctxFlowering, chartConfig(monthlyData.flower, 'Flowering Agreements', colors));
+            new Chart(ctxFruiting, chartConfig(monthlyData.fruit, 'Fruiting Agreements', colors));
+        }
+    </script>
+   
+    <footer>
+        <p>&copy; 2024 Aloe Hub - Discover the Wonders of Aloe Ferox</p>
+    </footer>
+</body>
+</html>

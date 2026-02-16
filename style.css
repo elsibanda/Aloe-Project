@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #e3f2e1; /* Soft green background for a calming eco-friendly feel */
+    color: #2e4222; /* Dark green text color */
+}
+
+section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    background-color: #ffffff; /* Light background to keep the form clean */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    border: 2px solid #a8d5ba; /* Soft green border */
+}
+
+form h2 {
+    text-align: center;
+    color: #4caf50; /* Green heading color */
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.inputbox {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.inputbox label {
+    display: block;
+    color: #5a5a5a; /* Dark gray label color */
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.inputbox input {
+    width: 100%;
+    padding: 10px;
+    background-color: #f1f8f5; /* Very light green input background */
+    border: 1px solid #b5d7c6; /* Soft green border */
+    border-radius: 5px;
+    color: #2e4222; /* Dark green text color */
+    font-size: 16px;
+}
+
+.inputbox input::placeholder {
+    color: #9ea9a0; /* Gray placeholder text */
+}
+
+/* Primary Submit Button */
+button#SignupBTN, button#LoginBTN {
+    background-color: darkolivegreen; /* Lime green background */
+    border: none;
+    color: white;
+    padding: 16px 24px; /* Increased padding for a bigger button */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px; /* Increased font size for better visibility */
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 20px; /* Curved edges */
+    animation: blink 1s infinite; /* Apply blinking animation */
+    transition: background-color 0.3s ease;
+}
+
+    button#SignupBTN:hover, button#LoginBTN:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+
+    button#SignupBTN:active, button#LoginBTN:active {
+        background-color: #388e3c; /* Even darker green when clicked */
+    }
+
+/* Secondary Toggle Button */
+button#goToSignup, button#goToLogin {
+    background-color: lightgreen; /* Lime green background */
+    border: none;
+    color: white;
+    padding: 12px 24px; /* Increased padding for a bigger button */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px; /* Increased font size for better visibility */
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 20px; /* Curved edges */
+    animation: blink 1s infinite; /* Apply blinking animation */
+    transition: background-color 0.3s ease;
+}
+
+    button#goToSignup:hover, button#goToLogin:hover {
+        background-color: #3e8e41; /* Darker green on hover */
+    }
+
+    button#goToSignup:active, button#goToLogin:active {
+        background-color: #7fae8f; /* Darker shade when clicked */
+    }
+
+
+/* Message Box */
+#messageBox {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2ecc71; /* Green for success */
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: 1.2em;
+    text-align: center;
+    z-index: 1000;
+    display: none; /* Initially hidden */
+}
+
+/* Show Message Box */
+#messageBox.show {
+    display: block;
+    animation: fade-in 0.5s ease;
+}
+
+/* Fade-in Animation */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}

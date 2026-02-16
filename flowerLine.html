@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flowering Stage Growth</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+    <style>
+        header {
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #2e8b57;
+        }
+        .chart-container {
+            width: 40%;
+            margin: 20px auto;
+        }
+        footer {
+            padding: 20px;
+            text-align: center;
+            background-color: #2e8b57;
+            color: white;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Growth of Flowering Stage</h1>
+    </header>
+
+    <div class="chart-container">
+        <canvas id="flowerLine-id"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="flowerPie-id"></canvas>
+    </div>
+
+    <script>
+        let flowerName = './Flower_Process.csv';
+
+        // Function to parse and format date
+        function processDate(dateString) {
+            const date = new Date(dateString);
+            return {
+                fullDate: dateString,
+                year: date.getFullYear(),
+                month: new Intl.DateTimeFormat('en-US', { month: 'short' }).format(date),
+                monthNum: date.getMonth() + 1, // 1-12
+                day: date.getDate()
+            };
+        }
+
+        // Load the data and process
+        d3.csv(flowerName).then(function(flowerData) {
+            // Process the data
+            const processedData = flowerData.map(row => ({
+                num_identification_agreements: parseInt(row.num_identification_agreements),
+                month: new Date(row.observed_on).getMonth()
+            }));
+
+            // Aggregate data by month
+            const monthlyData = aggregateByMonth(processedData);
+
+            // Group data by state for pie chart
+            const stateAgreements = flowerData.reduce((acc, row) => {
+                const state = row.place_state_name;
+                const agreements = parseInt(row.num_identification_agreements) || 0;
+                
+                if (!acc[state]) {
+                    acc[state] = 0;
+                }
+                acc[state] += agreements;
+                return acc;
+            }, {});
+
+            // Prepare data for pie chart
+            const states = Object.keys(stateAgreements);
+            const agreementCounts = Object.values(stateAgreements);
+
+            // Generate colors for each state
+            const colors = states.map((_, index) => {
+                const hue = (index * 360 / states.length) % 360;
+                return `hsla(${hue}, 70%, 60%, 0.8)`;
+            });
+
+            // Create the visualizations
+            createLineChart(monthlyData);
+            createPieChart(states, agreementCounts, colors);
+        }).catch(error => console.error("Error processing data:", error));
+
+        // Function to aggregate data by month
+        function aggregateByMonth(data) {
+            const months = Array(12).fill(0).map((_, i) => i); // 0-11 for all months
+            
+            return months.map(month => ({
+                month: month,
+                total: data
+                    .filter(d => d.month === month)
+                    .reduce((sum, d) => sum + d.num_identification_agreements, 0)
+            }));
+        }
+
+        // Function to create the line chart
+        function createLineChart(monthlyData) {
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            const lineChartConfig = {
+                type: 'line',
+                data: {
+                    labels: monthNames,
+                    datasets: [{
+                        label: 'Flowering Agreements',
+                        data: monthlyData.map(d => d.total),
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Identification Agreements'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Month'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Monthly Flowering Identification Agreements'
+                        }
+                    }
+                }
+            };
+
+            const ctx = document.getElementById('flowerLine-id').getContext('2d');
+            new Chart(ctx, lineChartConfig);
+        }
+
+    
+    </script>
+
+    <footer>
+        <p>&copy; 2024 Aloe Hub - Discover the Wonders of Aloe Ferox</p>
+    </footer>
+</body>
+</html>

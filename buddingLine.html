@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <style>
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+    </style> 
+</head>
+<body>
+    <div class="chart-container">
+        <canvas id="your-chart-canvas-id"></canvas>
+    </div>
+    <script>
+        let buddingName = './budding.csv';
+
+
+        
+        // Function to parse and format date
+        function processDate(dateString) {
+            const date = new Date(dateString);
+            return {
+                fullDate: dateString,
+                year: date.getFullYear(),
+                month: new Intl.DateTimeFormat('en-US', { month: 'short' }).format(date),
+                monthNum: date.getMonth() + 1, // 1-12
+                day: date.getDate()
+            };
+        }
+        
+        // First, verify data loading with correct columns
+        Promise.all([
+            d3.csv(buddingName),
+            
+        ]).then(function([buddingData]) {
+            // Log first few rows to verify data structure
+            console.log("Sample budding data:", buddingData.slice(0, 3));
+            
+        
+            // Process the data with correct column name
+
+            const processedData = {
+               budding: buddingData.map(row => ({
+                    
+                    num_identification_agreements: parseInt(row.num_identification_agreements),
+                    observed_on: row.observed_on,
+                    month: new Date(row.observed_on).getMonth()
+                    
+                })),
+                
+            };
+        
+            // Group data by month
+            const monthlyData = aggregateByMonth(processedData);
+            
+            // Create visualization
+            createVisualization(monthlyData);
+            
+        }).catch(error => console.error("Error processing data:", error));
+        
+        function aggregateByMonth(data) {
+            const months = Array(12).fill(0).map((_, i) => i); // 0-11 for all months
+            
+            const monthlyTotals = {
+                budding: months.map(month => ({
+                    month: month,
+                    total: data.budding
+                        .filter(d => d.month === month)
+                        .reduce((sum, d) => sum + d.num_identification_agreements, 0)
+                })),
+                
+            };
+            
+            return monthlyTotals;
+        }
+        
+        function createVisualization(monthlyData) {
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
+            const config = {
+                type: 'line',
+                data: {
+                    labels: monthNames,
+                    datasets: [
+                        {
+                            label: 'Budding Agreements',
+                            data: monthlyData.budding.map(d => d.total),
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            fill: false,
+                            tension: 0.1
+                        },
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Identification Agreements'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Month'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Monthly Phenology Identification Agreements'
+                        }
+                    }
+                }
+            };
+        
+            // If chart already exists, destroy it
+            if (window.growthChart instanceof Chart) {
+                window.growthChart.destroy();
+            }
+            
+            // Create new chart
+            const ctx = document.getElementById('your-chart-canvas-id').getContext('2d');
+            window.growthChart = new Chart(ctx, config);
+        }
+        </script>
+</body>
+</html>

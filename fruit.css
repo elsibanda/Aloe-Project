@@ -1,0 +1,212 @@
+/* Reset and basic styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #f4faf6;
+    color: #333;
+}
+
+/* Header Styling */
+header {
+    background-color: #2a5d32; /* Dark green (navbar match) */
+    padding: 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.nav-buttons button {
+    padding: 8px 15px;
+    background-color: #2a5d32; /* Match navbar background */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-buttons button:hover {
+    background-color: #3a8045; /* Lighter green on hover */
+    color: #eaf8e6; /* Light green text */
+}
+
+/* Main Banner Section */
+.main-banner {
+    background-color: #eaf8e6; /* Light green */
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.main-banner h1 {
+    font-size: 2.5rem;
+    color: #2a5d32; /* Match navbar header color */
+}
+
+.main-banner p {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* Button Section */
+.buttons-section {
+    text-align: center;
+    margin: 40px 0;
+}
+
+@keyframes colorChange {
+    0% {
+        background-color: #04AA6D;
+    }
+    /* Initial shade */
+    25% {
+        background-color: #007B5F;
+    }
+    /* Darker shade */
+    50% {
+        background-color: #009B77;
+    }
+    /* Medium shade */
+    75% {
+        background-color: #00B386;
+    }
+    /* Lighter shade */
+    100% {
+        background-color: #04AA6D;
+    }
+    /* Back to initial shade */
+}
+/* Button Section */
+.buttons-section {
+    font-family: 'Roboto', sans-serif; /* Apply the graphic font */
+    background-color: #f4f4f4; /* Light background for contrast */
+    text-align: center;
+    padding: 50px;
+}
+
+    .buttons-section button {
+        animation: colorChange 5s infinite; /* Apply the color change animation */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        transition: box-shadow 0.3s ease; /* Smooth transition for shadow */
+        border-radius: 5px; /* Rounded corners */
+    }
+
+        .buttons-section button:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); /* Shine effect on hover */
+        }
+
+/* Screenshot Section */
+.screenshots {
+    background-color: #f9fdf9;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.screenshots h2 {
+    color: #2e8b57;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Screenshot Gallery */
+.screenshot-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.screenshot-gallery figure {
+    width: 220px;
+    margin: 0;
+    text-align: center;
+}
+
+.screenshot-gallery img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.screenshot-gallery img:hover {
+    transform: scale(1.05);
+}
+
+.screenshot-gallery figcaption {
+    font-size: 14px;
+    color: #666;
+    margin-top: 8px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #2e8b57;
+    color: white;
+}
+
+/* Fullscreen container styling */
+#fullscreen-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    text-align: center;
+    padding: 20px;
+}
+
+#fullscreen-image {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 8px;
+}
+
+#close-btn {
+    background: linear-gradient(135deg, #04AA6D, #007B5F); /* Gradient background */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    border-radius: 5px; /* Rounded corners */
+}
+    #close-btn:hover {
+        background: linear-gradient(135deg, #007B5F, #04AA6D); /* Reverse gradient on hover */
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); /* Shine effect */
+    }

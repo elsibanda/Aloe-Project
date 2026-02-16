@@ -1,0 +1,873 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Navbar Styling */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2a5d32; /* Dark green */
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+/* Logo Styling */
+.nav-logo {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.8rem;
+    font-weight: bold;
+    flex: 1; /* Allow the logo to stand alone on the left */
+}
+
+.logo-text {
+    margin-left: 10px;
+}
+
+/* Menu Wrapper Styling */
+.nav-menu-wrapper {
+    display: flex;
+    gap: 15px; /* Space between buttons */
+}
+
+/* Menu Styling */
+.nav-menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between each nav-item */
+}
+
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: 500;
+    background-color: #2a5d32; /* Dark green button */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none; /* Removes outline on focus */
+    border: none; /* Remove any border */
+}
+
+.nav-link:hover {
+    background-color: #3a8045; /* Lighter green on hover */
+    color: #eaf8e6; /* Light green text on hover */
+}
+
+/* Burger Icon for Mobile */
+.burger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.burger div {
+    width: 25px;
+    height: 3px;
+    background-color: #ffffff;
+    margin: 4px;
+    transition: all 0.3s ease;
+}
+
+/* Responsive Menu */
+@media (max-width: 768px) {
+    .nav-menu-wrapper {
+        display: none; /* Hide menu on mobile */
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #2a5d32;
+        width: 100%;
+        text-align: right;
+        padding: 15px;
+    }
+
+    .nav-menu-wrapper.active {
+        display: flex; /* Show menu when burger is clicked */
+    }
+
+    .burger {
+        display: flex; /* Show burger icon on mobile */
+    }
+
+    .nav-item {
+        margin: 10px 0;
+    }
+}
+
+
+html{
+    scroll-behavior: smooth;
+}
+
+
+
+/* Hero Section Styling */
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100vh;
+    padding: 40px;
+    background-color: #eaf8e6; /* Light eco-friendly green background */
+    color: #333;
+}
+
+/* Container for both text and image */
+.section-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Text Details */
+.hero-details {
+    flex: 1;
+    max-width: 600px;
+}
+
+.title {
+    font-size: 2.5rem;
+    color: #2a5d32; /* Dark green */
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #66b578; /* Lighter eco-friendly green for subtitle */
+    margin-bottom: 15px;
+}
+
+.description {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Hero Image Styling */
+.hero-image-wrapper {
+    flex-shrink: 0; /* Prevents image from shrinking */
+    border-radius: 50%;
+    overflow: hidden;
+    width: 250px;
+    height: 250px;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Hero Buttons Styling */
+.herobuttons {
+    margin-top: 20px;
+}
+
+    .herobuttons a {
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        transition: box-shadow 0.3s ease; /* Smooth transition for shadow */
+        border-radius: 5px; /* Rounded corners */
+        background-color: forestgreen;
+    }
+
+        .herobuttons a:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); /* Shine effect on hover */
+        }
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .section-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-details {
+        text-align: center;
+        max-width: 100%;
+    }
+
+    .hero-image-wrapper {
+        margin-top: 20px;
+        width: 150px;
+        height: 150px;
+    }
+}
+
+
+/* Responsive media query for max-width 900px */
+@media screen and (max-width: 900px) {
+    /* Navbar styles */
+    .navbar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 300px;
+        height: 100%;
+        background: #333; /* Dark background for the navbar */
+        color: white; /* Ensure text is readable */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 40px; /* Add padding to create space below the navbar */
+        z-index: 1000;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3); /* Shadow for a more defined edge */
+    }
+
+    /* Navigation menu styles */
+    .nav-menu {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px; /* Reduced space between items */
+    }
+
+    /* Navigation link (button) styles */
+    .nav-link {
+        color: white; /* White text for contrast on dark background */
+        display: block;
+        margin-top: 10px; /* Reduced space above each link */
+        font-size: 16px; /* Slightly smaller font size */
+        text-decoration: none;
+        padding: 8px 12px; /* Reduced padding */
+        border-radius: 5px;
+    }
+
+    /* Hover effect for links */
+    .nav-link:hover {
+        background-color: #66b578; /* Lighter green on hover */
+        color: #fff; /* Ensures text remains white */
+    }
+
+    /* Ensure page content isn't hidden behind the navbar */
+    body {
+        padding-left: 320px; /* Prevent content from being hidden behind the navbar */
+    }
+
+    /* Push the content down to prevent the navbar from overlapping */
+    .section-content {
+        margin-top: 80px; /* Increase margin to ensure content is pushed down */
+    }
+
+    /* Ensure there's enough space above the first button */
+    .hero-details {
+        margin-top: 80px; /* Add margin to create space between navbar and the title/first button */
+    }
+
+    /* Navbar logo/title positioning */
+    .nav-logo {
+        position: absolute; /* This keeps the title fixed at the top */
+        top: 20px;
+        left: 20px;
+    }
+      /* Hide the logo text when the menu is responsive */
+      .logo-text {
+        display: none;
+    }
+}
+
+/* Show the logo text again when screen is larger than 900px */
+@media screen and (min-width: 901px) {
+    .logo-text {
+        display: block;
+    }
+}
+
+
+/* About Section */
+.about-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px 20px;
+    background-color: #4f7c4f; /* Darker eco-friendly green */
+}
+
+.section-content {
+    display: flex;
+    flex-wrap: wrap; /* Makes sure it works well on small screens */
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-image-wrapper {
+    flex: 1;
+    max-width: 50%;
+    padding: 20px;
+}
+
+.about-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.about-details {
+    flex: 1;
+    max-width: 50%;
+    padding: 20px;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    color: #fff; /* White text for contrast on dark background */
+    margin-bottom: 20px;
+}
+
+.text {
+    font-size: 1rem;
+    color: #f4f4f4; /* Light gray for text for contrast */
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.social-link-list {
+    display: flex;
+    gap: 15px;
+}
+
+.social-link {
+    color: #f4f4f4; /* Light gray icons */
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-link:hover {
+    color: #fff; /* White icons on hover */
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 768px) {
+    .about-section {
+        padding: 30px 10px;
+    }
+
+    .section-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-image-wrapper,
+    .about-details {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .about-image {
+        border-radius: 50%; /* Makes the image round on small screens */
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2rem;
+    }
+
+    .text {
+        text-align: center;
+        font-size: 1.1rem;
+    }
+}
+
+
+
+/* Menu Section */
+.Menu-section {
+    padding: 50px 20px;
+    background-color: #e9f7e3; /* Light green background */
+    background-image: linear-gradient(to bottom, #e9f7e3, #c4e2b0); /* Subtle gradient for a rich effect */
+    text-align: center;
+}
+
+.section-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Menu Section */
+.Menu-section {
+    padding: 50px 20px;
+    background-color: #e9f7e3; /* Light green background */
+    background-image: linear-gradient(to bottom, #e9f7e3, #c4e2b0); /* Subtle gradient for a rich effect */
+    text-align: center;
+}
+
+.section-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+/* Menu Section */
+.Menu-section {
+    padding: 50px 20px;
+    background-color: #f4f9f4; /* Soft light green background */
+    background-image: linear-gradient(to bottom, #f4f9f4, #e0f0e0); /* Subtle gradient */
+    text-align: center;
+}
+
+.section-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+/* Menu Section */
+.Menu-section {
+    padding: 50px 20px;
+    background-color: #f4f9f4; /* Soft light green background */
+    background-image: linear-gradient(to bottom, #f4f9f4, #e0f0e0); /* Subtle gradient */
+    text-align: center;
+}
+
+.section-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+/* Menu Section */
+.Menu-section {
+    padding: 50px 20px;
+    background-color: #f4f9f4; /* Soft light green background */
+    background-image: linear-gradient(to bottom, #f4f9f4, #e0f0e0); /* Subtle gradient */
+    text-align: center;
+}
+
+.section-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Menu Title */
+.menu-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #3e5d49;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+/* Menu List */
+.menu-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+/* Menu Item */
+.menu-item {
+    background-color: #fff;
+    width: calc(33.33% - 20px);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Softer shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+    position: relative;
+}
+
+.menu-item:hover {
+    transform: translateY(-10px); /* Slight elevation on hover */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* More pronounced shadow */
+    background-color: #e1f3d8; /* Light green background on hover */
+}
+
+/* Image */
+.menu-image {
+    width: 100%;
+    height: 220px; /* Fixed height for images */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.menu-image:hover {
+    transform: scale(1.05); /* Smooth zoom on hover */
+}
+
+/* Title */
+.menu-item h3 {
+    padding: 15px;
+    font-size: 1.7rem;
+    color: #2e4a3a; /* Dark green text */
+    margin: 0;
+    font-weight: 600;
+    text-transform: uppercase; /* Make title bold and uppercase */
+    background-color: #5a8a4e; /* Elegant green background */
+    color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+/* Description */
+.menu-item p {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #4f4f4f;
+    line-height: 1.6;
+    background-color: #fafafa; /* Soft light background for text */
+    margin: 0;
+}
+
+/* Button */
+.menu-item button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #3c6e47; /* Dark green button */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-transform: uppercase;
+}
+
+.menu-item button:hover {
+    background-color: #4a8b61; /* Lighter green on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Remove underlines from menu links */
+.menu-item a {
+    text-decoration: none; /* Remove underline */
+}
+
+.menu-item a:hover {
+    text-decoration: none; /* Ensure no underline on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .menu-item {
+        width: calc(50% - 20px); /* Stack items in 2 columns for medium screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-item {
+        width: 100%; /* Stack items in 1 column for small screens */
+    }
+}
+
+
+
+
+/* Testimonials Section Styles */
+.testimonials-section {
+    background-color: #1a3d2a; /* Dark green background */
+    color: white;
+    padding: 50px 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 30px rgba(46, 204, 113, 0.7);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Center items vertically */
+}
+
+.testimonials-section .section-title {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.testimonials-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px; /* Add gap between testimonials */
+}
+
+.testimonial {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 22%;
+    max-width: 250px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+    .testimonial:hover {
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); /* Shine effect on hover */
+        transform: translateY(-5px);
+    }
+
+.testimonial img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.testimonial h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.testimonial i {
+    font-style: italic;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .testimonial {
+        width: 45%; /* Adjust item width for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .testimonial {
+        width: 90%; /* Stack items vertically on very small screens */
+    }
+}
+
+
+
+
+/* Contact Section Styles */
+.contact-section {
+ background: linear-gradient(135deg, #ff6f91, #8854d0); /* Gradient from pink to purple */
+    border: none;
+    color: white;
+    padding: 15px 30px; /* Adjust padding for size */
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 25px; /* Rounded edges */
+    position: relative; /* Position for shine effect */
+    overflow: hidden; /* Hide overflow for shine */
+    transition: background 0.3s ease; /* Smooth transition for background */; 
+}
+
+.contact-section .section-title {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.contact-info-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    flex-wrap: wrap; 
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    margin: 20px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.1); 
+    border-radius: 10px;
+    width: 20%; 
+    max-width: 250px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+    .contact-info:hover {
+        background: linear-gradient(135deg, #ff4e50, #fc913a); /* Darker gradient on hover */
+        transform: translateY(-5px);
+    }
+
+.contact-info i {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    color: #fff; 
+}
+
+.contact-info p {
+    margin: 0;
+    font-size: 1.2em;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.contact-info a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+    color: #FFEB3B; 
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact-info {
+        width: 45%; /* Adjust item width for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-info {
+        width: 90%; /* Stack items vertically on very small screens */
+    }
+}
+
+
+
+
+
+/* Footer Section Styles */
+.footer-section {
+    background-color: #000; /* Black background */
+    color: #fff; /* White text */
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-section .section-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.footer-section .copyright-text {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.footer-section .policy-text {
+    font-size: 1em;
+}
+
+.footer-section .policy-link {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer-section .policy-link:hover {
+    text-decoration: underline;
+}
+
+.footer-section .separator {
+    color: #fff;
+    margin: 0 5px;
+}

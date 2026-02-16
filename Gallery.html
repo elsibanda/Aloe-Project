@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aloe Plant Image Gallery</title>
+    <link rel="stylesheet" href="gallery.css">
+    <script>
+        function goToPage(page) {
+            window.location.href = page;
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="header-title">AloeScenes</div>
+        <div class="nav-buttons">
+            <button onclick="goToPage('homenew.html')">Home</button>
+           
+        </div>
+    </header>
+
+    <h1>Image Gallery</h1>
+
+    <section class="gallery">
+        <!-- Repeat these blocks with different image sources and captions -->
+        <div class="gallery-item">
+            <img src="Aloe_1.png" alt="Aloe Plant 1">
+            <h3>Aloe Plant 1</h3>
+            <p>This image shows a mature Aloe Ferox plant in full bloom.</p>
+        </div>
+        <div class="gallery-item">
+            <img src="Aloe_2.png" alt="Aloe Leaf Close-Up">
+            <h3>Aloe Leaf Close-Up</h3>
+            <p>A close-up view of the thick, fleshy leaves of the Aloe plant.</p>
+        </div>
+        <div class="gallery-item">
+            <img src="Aloe_3.png" alt="Harvested Aloe">
+            <h3>Harvested Aloe</h3>
+            <p>Freshly harvested Aloe leaves ready for processing.</p>
+        </div>
+        <div class="gallery-item">
+            <img src="Aloe_4.png" alt="Aloe in Desert">
+            <h3>Aloe in Desert</h3>
+            <p>An Aloe Ferox thriving in arid desert conditions.</p>
+        </div>
+        
+        <!-- Add more gallery-item divs as needed -->
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Aloe Hub - Discover the Wonders of Aloe Ferox</p>
+    </footer>
+</body>
+</html>
